@@ -222,6 +222,75 @@ FROM Authors a
 JOIN Books b ON a.AuthorID = b.AuthorID
 JOIN Borrow br ON b.BookID = br.BookID;
 
+-- Find books and their authors
+SELECT b.Title, a.Name AS Author
+FROM Books b
+INNER JOIN Authors a ON b.AuthorID = a.AuthorID;
+
+-- 2. LEFT JOIN
+--  List all books, even those without authors (if any)
+SELECT b.Title, a.Name AS Author
+FROM Books b
+LEFT JOIN Authors a ON b.AuthorID = a.AuthorID;
+
+-- 3. RIGHT JOIN
+SELECT a.Name AS Author, b.Title
+FROM Books b
+RIGHT JOIN Authors a ON b.AuthorID = a.AuthorID;
+
+-- 4. FULL OUTER JOIN (Simulated using UNION)
+SELECT a.Name AS Author, b.Title
+FROM Authors a
+LEFT JOIN Books b ON a.AuthorID = b.AuthorID
+
+UNION
+
+SELECT a.Name AS Author, b.Title
+FROM Authors a
+RIGHT JOIN Books b ON a.AuthorID = b.AuthorID;
+
+-- 5. JOIN with Borrow, Members, Books
+SELECT br.BorrowID, m.Name AS Member, b.Title AS Book, br.BorrowDate, br.ReturnDate
+FROM Borrow br
+INNER JOIN Members m ON br.MemberID = m.MemberID
+INNER JOIN Books b ON br.BookID = b.BookID;
+
+-- 6. LEFT JOIN: List all members and their borrow records (even if they borrowed nothing)
+SELECT m.Name AS Member, b.Title AS Book, br.BorrowDate
+FROM Members m
+LEFT JOIN Borrow br ON m.MemberID = br.MemberID
+LEFT JOIN Books b ON br.BookID = b.BookID;
+
+--  7. RIGHT JOIN: List all books and who borrowed them (if anyone)
+SELECT b.Title, m.Name AS Borrower
+FROM Borrow br
+RIGHT JOIN Books b ON br.BookID = b.BookID
+LEFT JOIN Members m ON br.MemberID = m.MemberID;
+
+-- 8.  FULL JOIN Simulation: Members and their borrows
+SELECT m.Name AS Member, b.Title AS Book
+FROM Members m
+LEFT JOIN Borrow br ON m.MemberID = br.MemberID
+LEFT JOIN Books b ON br.BookID = b.BookID
+
+UNION
+
+SELECT m.Name AS Member, b.Title AS Book
+FROM Members m
+RIGHT JOIN Borrow br ON m.MemberID = br.MemberID
+RIGHT JOIN Books b ON br.BookID = b.BookID;
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
