@@ -279,27 +279,105 @@ SELECT m.Name AS Member, b.Title AS Book
 FROM Members m
 RIGHT JOIN Borrow br ON m.MemberID = br.MemberID
 RIGHT JOIN Books b ON br.BookID = b.BookID;
+-- 1. Scalar Subquery in SELECT
+
+SELECT Title, 
+       (SELECT AVG(BookID) FROM Books) AS AvgBookID
+FROM Books;
+
+-- 2. Subquery in WHERE with IN
+
+SELECT Name 
+FROM Members 
+WHERE MemberID IN (
+    SELECT br.MemberID
+    FROM Borrow br
+    JOIN Books b ON br.BookID = b.BookID
+    JOIN Authors a ON b.AuthorID = a.AuthorID
+    WHERE a.Name = 'J.K. Rowling'
+);
+
+-- 3. Correlated Subquery in WHERE
+
+SELECT Title
+FROM Books b1
+WHERE BookID > (
+    SELECT AVG(b2.BookID)
+    FROM Books b2
+    WHERE b2.CategoryID = b1.CategoryID
+);
+ 
+-- 4. Subquery in FROM Clause (Derived Table) 
+
+SELECT c.CategoryName, avgdata.AvgBookID
+FROM (
+    SELECT CategoryID, AVG(BookID) AS AvgBookID
+    FROM Books
+    GROUP BY CategoryID
+) avgdata
+JOIN Categories c ON c.CategoryID = avgdata.CategoryID;
+
+-- 5. Subquery with EXISTS
+
+SELECT Name 
+FROM Authors a
+WHERE EXISTS (
+    SELECT 1
+    FROM Books b
+    JOIN Borrow br ON b.BookID = br.BookID
+    WHERE b.AuthorID = a.AuthorID
+);
+
+-- 6. Subquery with EXISTS
+
+SELECT Name 
+FROM Authors a
+WHERE EXISTS (
+    SELECT 1
+    FROM Books b
+    JOIN Borrow br ON b.BookID = br.BookID
+    WHERE b.AuthorID = a.AuthorID
+);
+
+7. Subquery in WHERE with =
+-- Find books written by the author with the highest number of books:
+SELECT Title
+FROM Books
+WHERE AuthorID = (
+    SELECT AuthorID
+    FROM Books
+    GROUP BY AuthorID
+    ORDER BY COUNT(*) DESC
+    LIMIT 1
+);
+-- . Correlated Subquery with AVG Return Days
+ -- List borrow records where the return duration is greater than average return duration:
 
 
+SELECT *
+FROM Borrow br1
+WHERE DATEDIFF(br1.ReturnDate, br1.BorrowDate) > (
+    SELECT AVG(DATEDIFF(ReturnDate, BorrowDate))
+    FROM Borrow
+    WHERE ReturnDate IS NOT NULL
+);
+-- 9. Subquery in WHERE with NOT IN
+ -- Find members who haven’t borrowed any book:
+SELECT Name
+FROM Members
+WHERE MemberID NOT IN (
+    SELECT DISTINCT MemberID FROM Borrow
+);
 
+--  10. Subquery in FROM for Author Book Counts
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+SELECT Name, BookCount
+FROM (
+    SELECT a.Name, COUNT(b.BookID) AS BookCount
+    FROM Authors a
+    JOIN Books b ON a.AuthorID = b.AuthorID
+    GROUP BY a.Name
+) AS AuthorBookCounts
+WHERE BookCount > 1;
 
 
