@@ -36,7 +36,7 @@ JOIN Books b ON a.AuthorID = b.AuthorID
 GROUP BY a.Name;
 # 📚 LibraryDB – SQL Joins Practice
 
-## 🎯 Task 5: SQL Joins (Inner, Left, Right, Full)
+## 🎯----- Task 5: SQL Joins (Inner, Left, Right, Full)
 
 This project is part of the SQL Developer Internship. The objective is to demonstrate proficiency in using various types of SQL JOINs by building and querying a Library Management System database.
 
@@ -73,6 +73,33 @@ The database `LibraryDB` consists of the following tables:
 - SQL (Structured Query Language)
 
 ---
+
+
+#--  Task 6: Subqueries and Nested Queries--
+
+## ✅ Objective
+Practice advanced SQL using subqueries in SELECT, WHERE, and FROM clauses.
+
+## 🧠 Concepts Covered
+- Scalar subqueries
+- Correlated subqueries
+- Subqueries using IN, EXISTS
+- Derived tables
+- Filtering and nested logic
+
+## 📄 Files
+- `task6_queries.sql` — SQL file with all subqueries
+- Screenshots (optional)
+- `README.md` — This documentation
+
+## 🛠 Tools Used
+- MySQL Workbench (or DB Browser for SQLite)
+
+## 📚 Sample Data
+Used the LibraryDB schema:
+- Authors, Books, Categories
+- Members, Borrow records
+
 
 ## 🔗 SQL Join Types Demonstrated
 
