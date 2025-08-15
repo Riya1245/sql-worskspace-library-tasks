@@ -107,5 +107,51 @@ Used the LibraryDB schema:
 Returns rows with matching values in both tables.
 ```sql
 SELECT b.Title, a.Name AS Author
+-----------------------------------------TASK - 7------------------------------------------------
+# 📘 Task 7: Creating Views – SQL Developer Internship
+
+## 📌 Objective
+
+The goal of this task was to learn how to **create and use SQL Views** for **data abstraction**, **reusability**, and **security**. Views are saved `SELECT` statements that simplify complex queries and help expose only required data to users.
+
+---
+
+## 🧰 Tools Used
+
+- **MySQL Workbench** (compatible with DB Browser for SQLite)
+- SQL language (DDL + DML)
+
+---
+
+## 🗂️ Database: `LibraryDB`
+
+The database consists of the following tables:
+
+- `Authors (AuthorID, Name)`
+- `Categories (CategoryID, CategoryName)`
+- `Books (BookID, Title, AuthorID, CategoryID)`
+- `Members (MemberID, Name, Email)`
+- `Borrow (BorrowID, MemberID, BookID, BorrowDate, ReturnDate)`
+
+---
+
+## 🏗️ Views Created
+
+### 1. `BookDetailsView`
+Shows full details of each book with its author and category.
+```sql
+CREATE VIEW BookDetailsView AS
+SELECT 
+    b.BookID,
+    b.Title,
+    a.Name AS Author,
+    c.CategoryName
+FROM Books b
+JOIN Authors a ON b.AuthorID = a.AuthorID
+JOIN Categories c ON b.CategoryID = c.CategoryID;
+
+
+
+
 FROM Books b
 INNER JOIN Authors a ON b.AuthorID = a.AuthorID;
