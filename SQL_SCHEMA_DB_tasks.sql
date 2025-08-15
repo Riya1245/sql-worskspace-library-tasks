@@ -441,4 +441,44 @@ SELECT
     Name
 FROM Members;
 
+-- Purpose: Show all books written by a given author (by name)
+DELIMITER //
+
+CREATE PROCEDURE GetBooksByAuthor(
+    IN author_name VARCHAR(100)
+)
+BEGIN
+    SELECT b.Title, a.Name AS Author
+    FROM Books b
+    JOIN Authors a ON b.AuthorID = a.AuthorID
+    WHERE a.Name = author_name;
+END //
+
+DELIMITER ;
+-- 📥 How to call it:
+CALL GetBooksByAuthor('J.K. Rowling');
+
+-- 2. Function: TotalBorrowedBooks 📌 Purpose: Return total number of books borrowed by a member (by Member ID)
+DELIMITER //
+
+CREATE FUNCTION TotalBorrowedBooks(member_id INT)
+RETURNS INT
+DETERMINISTIC
+BEGIN
+    DECLARE total INT;
+
+    SELECT COUNT(*) INTO total
+    FROM Borrow
+    WHERE MemberID = member_id;
+
+    RETURN total;
+END //
+
+DELIMITER ;
+-- How to call it:
+SELECT TotalBorrowedBooks(1);  -- Replace with actual MemberID
+
+
+
+
 
