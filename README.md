@@ -155,3 +155,38 @@ JOIN Categories c ON b.CategoryID = c.CategoryID;
 
 FROM Books b
 INNER JOIN Authors a ON b.AuthorID = a.AuthorID;
+
+--------------------------------- TASK - 8-----------------------------------------------
+# 📘 Task 8: Stored Procedures and Functions – SQL Developer Internship
+
+## 📌 Objective
+
+The goal of this task is to learn how to write **reusable SQL code** using **stored procedures and functions**. This helps in modularizing and organizing complex SQL logic.
+
+---
+
+## 🧰 Tools Used
+
+- MySQL Workbench (Compatible with SQLite for basic syntax)
+- SQL (DDL, DML, Stored Routines)
+
+---
+
+## 🗂️ Database Used: `LibraryDB`
+
+We used previously created tables:
+- `Authors`
+- `Books`
+- `Members`
+- `Borrow`
+
+---
+
+## 🧪 Stored Procedure
+
+### 🔹 `GetBooksByAuthor`
+**Purpose**: Displays all books written by a specific author.
+
+```sql
+CALL GetBooksByAuthor('J.K. Rowling');
+
