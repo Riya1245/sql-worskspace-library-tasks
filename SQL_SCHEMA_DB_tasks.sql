@@ -380,4 +380,65 @@ FROM (
 ) AS AuthorBookCounts
 WHERE BookCount > 1;
 
+-- ✅ Purpose: Show full book details including title, author name, and category.
+CREATE VIEW BookDetailsView AS
+SELECT 
+    b.BookID,
+    b.Title,
+    a.Name AS Author,
+    c.CategoryName
+FROM Books b
+JOIN Authors a ON b.AuthorID = a.AuthorID
+JOIN Categories c ON b.CategoryID = c.CategoryID;
+
+SELECT * FROM BookDetailsView WHERE CategoryName = 'Fiction';
+
+-- Show borrow details with member name and book title
+CREATE VIEW BorrowedBooksView AS
+SELECT 
+    br.BorrowID,
+    m.Name AS Member,
+    b.Title AS Book,
+    br.BorrowDate,
+    br.ReturnDate
+FROM Borrow br
+JOIN Members m ON br.MemberID = m.MemberID
+JOIN Books b ON br.BookID = b.BookID;
+SELECT * FROM BorrowedBooksView WHERE ReturnDate IS NULL;
+
+-- View: MemberBorrowCountView
+CREATE VIEW MemberBorrowCountView AS
+SELECT 
+    m.Name AS Member,
+    COUNT(br.BorrowID) AS TotalBorrows
+FROM Members m
+LEFT JOIN Borrow br ON m.MemberID = br.MemberID
+GROUP BY m.Name;
+SELECT * FROM MemberBorrowCountView ORDER BY TotalBorrows DESC;
+
+-- Show number of books per author
+CREATE VIEW AuthorBookCountView AS
+SELECT 
+    a.Name AS Author,
+    COUNT(b.BookID) AS BookCount
+FROM Authors a
+JOIN Books b ON a.AuthorID = b.AuthorID
+GROUP BY a.Name;
+SELECT * FROM AuthorBookCountView WHERE BookCount > 1;
+
+-- Track average number of days taken to return books
+CREATE VIEW AverageReturnDaysView AS
+SELECT 
+    AVG(DATEDIFF(ReturnDate, BorrowDate)) AS AvgReturnDays
+FROM Borrow
+WHERE ReturnDate IS NOT NULL;
+SELECT * FROM AverageReturnDaysView;
+DROP VIEW IF EXISTS BookDetailsView;
+ 
+ -- View: SafeMembersView
+CREATE VIEW SafeMembersView AS
+SELECT 
+    Name
+FROM Members;
+
 
